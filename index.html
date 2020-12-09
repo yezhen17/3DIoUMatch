@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title> 3DIoUMatch </title>
+		<meta charset="utf-8" />
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+        <meta name="viewport" content="width=1000">
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-89797207-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+
+      <meta property="og:url"           content="https://thu17cyz.github.io/3DIoUMatch/" />
+	    <meta property="og:type"          content="website" />
+	    <meta property="og:title"         content="3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection" />
+	    <meta property="og:description"   content="3D object detection is an important yet demanding task that heavily relies on difficult to obtain 3D annotations.
+                                                   To reduce the required amount of supervision, we propose 3DIoUMatch, a novel method for semi-supervised 3D object
+                                                   detection. We adopt VoteNet, a popular point cloud based object detector, as our backbone and leverage a
+                                                   teacher-student mutual learning framework to propagate information from the labeled to the unlabeled train set in
+                                                   the form of pseudo-labels. However, due to the high task complexity, we observe that the pseudo-labels suffer from significant noise and are thus not directly usable. To that end, we introduce a confidence-based filtering mechanism.
+                                                   The key to our approach is a novel differentiable 3D IoU estimation module. This module is used for filtering poorly localized proposals as well as for IoU-guided bounding box
+                                                   deduplication. At inference time, this module is further utilized to improve localization through test-time optimization.
+                                                   Our method consistently improves state-of-the-art methods on both ScanNet and SUN-RGBD benchmarks by significant
+                                                   margins. For example, when training using only 10% labeled data on ScanNet, 3DIoUMatch achieves 7.7 absolute
+                                                   improvement on mAP@0.25 and 8.5 absolute improvement on mAP@0.5 upon the prior art." />
+	    <meta property="og:image" content="images/teaser.png" />
+
+	</head>
+	<body id="top">
+
+		<!-- Main -->
+			<div id="main" style="padding-bottom:1em; padding-top: 5em; width: 60em; max-width: 70em; margin-left: auto; margin-right: auto;">
+					<section id="four">
+						<h1 style="text-align: center; margin-bottom: 0;"><font color="4e79a7">3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection</font></h1>
+						<h3 style="text-align: center; margin-bottom: 0;"><font color="4ea9a7">arXiv preprint</font></h3>
+						<span class="image right" style="max-width: 40%; margin-top: 0.5em; margin-bottom: 0; border: 2px solid #415161;"><img src="images/teaser.png" alt="" /></span>
+<!--
+						<p>Our environment is populated with articulated objects, ranging from furniture such as cabinets or ovens to small tabletop objects such as laptops or eyeglasses. Effectively interacting with these objects
+						requires a detailed understanding of their articulation states and part-level poses. Such understanding is beyond the scope of typical 6D pose estimation algorithms, which have been designed for rigid objects
+						Algorithms that do consider object articulations often require the exact object CAD model and the associated joint parameters at test time, preventing them from generalizing to new object instances. -->
+						<p style="text-align:justify;">3D object detection is an important yet demanding task that heavily relies on difficult to obtain 3D annotations.
+						To reduce the required amount of supervision, we propose 3DIoUMatch, a novel method for semi-supervised 3D object
+						detection. We adopt VoteNet, a popular point cloud based object detector, as our backbone and leverage a
+						teacher-student mutual learning framework to propagate information from the labeled to the unlabeled train set in
+						the form of pseudo-labels. However, due to the high task complexity, we observe that the pseudo-labels suffer from
+						significant noise and are thus not directly usable. To that end, we introduce a confidence-based filtering mechanism.
+						The key to our approach is a novel differentiable 3D IoU estimation module. This module is used for filtering poorly
+						localized proposals as well as for IoU-guided bounding box
+						deduplication. At inference time, this module is further utilized to improve localization through test-time
+						optimization.
+						Our method consistently improves state-of-the-art methods on both ScanNet and SUN-RGBD benchmarks by significant
+						margins. For example, when training using only 10% labeled data on ScanNet, 3DIoUMatch achieves 7.7 absolute
+						improvement on mAP@0.25 and 8.5 absolute improvement on mAP@0.5 upon the prior art.</p>
+
+						<div id="files" class="center" style="margin-top: 15px">
+							[ <a href="paper.pdf"><font color="2e6997">Paper</font></a> ]&nbsp;&nbsp;&nbsp;&nbsp;
+							[ <a href="https://github.com/thu17cyz/3DIoUMatch"><font color="2e6997">Code and pretrained models</font></a> ](To be released)&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+						<hr style="margin-top: 3em;">
+						<!-- <h3>Video</h3>
+            <iframe width="99%" height="618" src="https://www.youtube.com/embed/S8Amc6D8SKY?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						<hr style="margin-top: 3em;"> -->
+						<h3>Results</h3>
+						<h4>Performance: <font color="4e2997"> Comparison with VoteNet and SESS on ScanNet val set and SUN RGB-D val set under different ratios of labeled data</font></h4>
+						<span class="center"><img src="images/results/MAIN_RES.png" width="100%"></span>
+						<h4>Visualization: <font color="4e2997"> Qualitative results on ScanNet, with 10% labeled data. Here green bounding boxes have an IoU >= 0.25 while red bounding
+						boxes are with an IoU < 0.25 </font></h4>
+						<span class="center"><img src="images/results/SCAN_VIS.png" width="100%"></span>
+						<h4>Visualization: <font color="4e2997"> Qualitative results on SUNRGB-D, with 5% labeled data </font></h4>
+						<span class="center"><img src="images/results/SUN_VIS.png" width="100%"></span>
+						<hr style="margin-top: 3em;">
+						<h3>Paper</h3>
+
+						<p style="margin-bottom: 1em;">Latest version (December 8, 2020): <a href="https://arxiv.org/pdf/2012.04355.pdf">arXiv:2012.04355 in cs.CV</a> or <a href="paper.pdf">here</a>.
+						<div class="12u$"><a href="https://arxiv.org/pdf/2012.04355.pdf"><span class="image fit" style="border: 1px solid; border-color: #888888;"><img src="images/paper-thumbnail.png" alt="" /></span></a></div>
+
+						<hr>
+						<h3>Team</h3>
+						<section>
+							<div class="box alt" style="margin-bottom: 1em;">
+								<div class="row 50% uniform" style="width: 80%;">
+									<div class="2u" style="font-size: 0.7em; line-height: 1.5em; text-align: center;"><a
+											href="http://ai.stanford.edu/~hewang/"><span class="image fit" style="margin-bottom: 0.5em;"><img
+													src="images/hewang-thumbnail.jpg" alt="" style="border-radius: 50%;" /></span> He Wang <sup>1*</sup></a>
+									</div>
+									<div class="2u" style="font-size: 0.7em; line-height: 1.5em; text-align: center;"><a
+											href="http://thu17cyz.github.io/"><span class="image fit" style="margin-bottom: 0.5em;"><img
+													src="images/yezhen-thumbnail.jpg" alt="" style="border-radius: 50%;" /></span>Yezhen Cong
+											<sup>2*</sup></a></div>
+									<div class="2u" style="font-size: 0.7em; line-height: 1.5em; text-align: center;"><a
+											href="https://orlitany.github.io/"><span class="image fit"
+												style="margin-bottom: 0.5em;"><img src="images/or-thumbnail.jpg" alt=""
+													style="border-radius: 50%;" /></span> Yue Gao <sup>1</sup></a></div>
+									<div class="2u" style="font-size: 0.7em; line-height: 1.5em; text-align: center;"><a
+											href="http://www.gaoyue.org/en/people/gaoyue_index.html"><span class="image fit"
+												style="margin-bottom: 0.5em;"><img src="images/yue-thumbnail.jpg" alt=""
+													style="border-radius: 50%;" /></span> Yue Gao <sup>1</sup></a></div>
+									<div class="2u" style="font-size: 0.7em; line-height: 1.5em; text-align: center;"><a
+											href="https://geometry.stanford.edu/member/guibas/index.html"><span class="image fit"
+												style="margin-bottom: 0.5em;"><img src="images/guibas-thumbnail.png" alt=""
+													style="border-radius: 50%;" /></span> Leonidas J. Guibas <sup>1</sup></a></div>
+								</div>
+							</div>
+						</section>
+						<sup>1</sup> Stanford University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sup>2</sup> Tsinghua University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sup>3</sup> NVIDIA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<p style="margin-bottom: 1em;"> * stands for equal contribution.
+						<div class="row" style="margin-top: 1em">
+							<div class="12u$ 1u$(xsmall)">
+								<h3>Bibtex</h3>
+								<pre style="text-align:left;"><code>@article{wang20203dioumatch,
+title={3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection},
+author={Wang, He and Cong, Yezhen and Litany, Or and Gao, Yue and Guibas, Leonidas J},
+journal={arXiv preprint  arXiv:2012.04355},
+year={2020} }
+							</code></pre>
+							</div>
+						</div>
+						<hr/ style="margin-top: 1em">
+
+				        <h3>Acknowledgements</h3>
+								<p>This research is supported by a grant
+								from the SAIL-Toyota Center for AI Research, NSF grant
+								CHS-1528025, a Vannevar Bush Faculty fellowship, and
+								gifts from the Adobe, Amazon AWS, and Snap corporations. </p>
+						<hr/ style="margin-top: 1em">
+				        <h3>Contact</h3>
+				        <p>If you have any questions, please feel free to contact <a href="http://thu17cyz.github.io/">Yezhen Cong</a> at cyz17_at_mails.tsinghua.edu.cn and <a href="http://ai.stanford.edu/~hewang/">He Wang</a> at hewang_at_stanford.edu </p>
+						<hr/>
+					</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<ul class="copyright">
+						<li>Meet <a href="https://en.wikipedia.org/wiki/Danbo_(character)">Danbo</a> the cardboard robot.</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+	</body>
+</html>
