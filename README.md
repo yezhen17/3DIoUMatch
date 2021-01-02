@@ -77,6 +77,8 @@ We also provide the trained models of
 
 You may download the models and put them into `ckpts`.
 
+We provide 2 data splits of ScanNet 10% and SUNRGB-D 5% in `scannet/meta_data` and `sunrgbd/sunrgbd_trainval`, respectively.
+
 ## Pre-training
 
 Please run:
