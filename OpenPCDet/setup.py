@@ -26,7 +26,7 @@ def write_version_to_file(version, target_file):
     with open(target_file, 'w') as f:
         print('__version__ = "%s"' % version, file=f)
 
-
+# Deleted most of the ext_modules for faster installation
 if __name__ == '__main__':
     version = '0.3.0+%s' % get_git_commit_number()
     write_version_to_file(version, 'pcdet/version.py')
