@@ -20,7 +20,7 @@
       <meta property="og:url"           content="https://thu17cyz.github.io/3DIoUMatch/" />
 	    <meta property="og:type"          content="website" />
 	    <meta property="og:title"         content="3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection" />
-	    <meta property="og:description"   content="3D object detection is an important yet demanding task that heavily relies on difficult to obtain 3D annotations. To reduce the required amount of supervision, we propose 3DIoUMatch, a novel semi-supervised method for 3D object detection applicable to both indoor and outdoor scenes. We leverage a teacher-student mutual learning framework to propagate information from the labeled to the unlabeled train set in the form of pseudo-labels. However, due to the high task complexity, we observe that the pseudo-labels suffer from significant noise and are thus not directly usable. To that end, we introduce a confidence-based filtering mechanism, inspired by FixMatch. We set confidence thresholds based upon the predicted objectness and class probability to filter low-quality pseudo-labels. While effective, we observe that these two measures do not sufficiently capture localization quality. We therefore propose to use the estimated 3D IoU as a localization metric and set category-aware self-adjusted thresholds to filter poorly localized proposals. We adopt VoteNet as our backbone detector on indoor datasets while we use PV-RCNN on the autonomous driving dataset, KITTI. Our method consistently improves state-of-the-art methods on both ScanNet and SUN-RGBD benchmarks by significant margins under all label ratios (including fully labeled setting). For example, when training using only 10% labeled data on ScanNet, 3DIoUMatch achieves 7.7 absolute improvement on mAP@0.25 and 8.5 absolute improvement on mAP@0.5 upon the prior art. On KITTI, we are the first to demonstrate semi-supervised 3D object detection and our method surpasses a fully supervised baseline from 1.8% to 7.6% under different label ratios and categories." />
+	    <meta property="og:description"   content="3D object detection is an important yet demanding task that heavily relies on difficult to obtain 3D annotations. To reduce the required amount of supervision, we propose 3DIoUMatch, a novel semi-supervised method for 3D object detection applicable to both indoor and outdoor scenes. We leverage a teacher-student mutual learning framework to propagate information from the labeled to the unlabeled train set in the form of pseudo-labels. However, due to the high task complexity, we observe that the pseudo-labels suffer from significant noise and are thus not directly usable. To that end, we introduce a confidence-based filtering mechanism, inspired by FixMatch. We set confidence thresholds based upon the predicted objectness and class probability to filter low-quality pseudo-labels. While effective, we observe that these two measures do not sufficiently capture localization quality. We therefore propose to use the estimated 3D IoU as a localization metric and set category-aware self-adjusted thresholds to filter poorly localized proposals. We adopt VoteNet as our backbone detector on indoor datasets while we use PV-RCNN on the autonomous driving dataset, KITTI. Our method consistently improves state-of-the-art methods on both ScanNet and SUN-RGBD benchmarks by significant margins under all label ratios (including fully labeled setting). For example, when training using only 10\% labeled data on ScanNet, 3DIoUMatch achieves 7.7% absolute improvement on mAP@0.25 and 8.5% absolute improvement on mAP@0.5 upon the prior art. On KITTI, we are the first to demonstrate semi-supervised 3D object detection and our method surpasses a fully supervised baseline from 1.8% to 7.6% under different label ratios and categories." />
 	    <meta property="og:image" content="images/teaser.png" />
 
 	</head>
@@ -49,10 +49,10 @@
 						a localization metric and set category-aware self-adjusted thresholds to filter poorly localized proposals. We adopt
 						VoteNet as our backbone detector on indoor datasets while we use PV-RCNN on the autonomous driving dataset, KITTI. Our
 						method consistently improves state-of-the-art methods on both ScanNet and SUN-RGBD benchmarks by significant margins
-						under all label ratios (including fully labeled setting). For example, when training using only 10% labeled data on
-						ScanNet, 3DIoUMatch achieves 7.7 absolute improvement on mAP@0.25 and 8.5 absolute improvement on mAP@0.5 upon the prior
-						art. On KITTI, we are the first to demonstrate semi-supervised 3D object detection and our method surpasses a fully
-						supervised baseline from 1.8% to 7.6% under different label ratios and categories.</p>
+						under all label ratios (including fully labeled setting). For example, when training using only 10\% labeled data on
+						ScanNet, 3DIoUMatch achieves 7.7% absolute improvement on mAP@0.25 and 8.5% absolute improvement on mAP@0.5 upon the
+						prior art. On KITTI, we are the first to demonstrate semi-supervised 3D object detection and our method surpasses a
+						fully supervised baseline from 1.8% to 7.6% under different label ratios and categories.</p>
 
 						<div id="files" class="center" style="margin-top: 15px">
 							[ <a href="paper.pdf"><font color="2e6997">Paper</font></a> ]&nbsp;&nbsp;&nbsp;&nbsp;
@@ -77,8 +77,8 @@
 						<hr style="margin-top: 3em;">
 						<h3>Paper</h3>
 
-						<p style="margin-bottom: 1em;">Latest version (April 7, 2021): <a href="https://arxiv.org/pdf/2012.04355v2.pdf">arXiv:2012.04355 in cs.CV</a> or <a href="paper.pdf">here</a>.
-						<div class="12u$"><a href="https://arxiv.org/pdf/2012.04355.pdf"><span class="image fit" style="border: 1px solid; border-color: #888888;"><img src="images/paper-thumbnail.png" alt="" /></span></a></div>
+						<p style="margin-bottom: 1em;">Latest version (July 6, 2021): <a href="https://arxiv.org/pdf/2012.04355v3.pdf">arXiv:2012.04355v3 in cs.CV</a> or <a href="paper.pdf">here</a>.
+						<div class="12u$"><a href="https://arxiv.org/pdf/2012.04355v3.pdf"><span class="image fit" style="border: 1px solid; border-color: #888888;"><img src="images/paper-thumbnail.png" alt="" /></span></a></div>
 
 						<hr>
 						<h3>Team</h3>
@@ -113,23 +113,20 @@
 						<div class="row" style="margin-top: 1em">
 							<div class="12u$ 1u$(xsmall)">
 								<h3>Bibtex</h3>
-								<pre style="text-align:left;"><code>@article{wang20203dioumatch,
-title={3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection},
-author={Wang, He and Cong, Yezhen and Litany, Or and Gao, Yue and Guibas, Leonidas J},
-journal={arXiv preprint arXiv:2012.04355},
-year={2020}
-}
+								<pre style="text-align:left;"><code>
+									@inproceedings{wang20213dioumatch, 
+									title={3DIoUMatch: Leveraging iou prediction for semi-supervised 3d object detection},
+								    author={Wang, He and Cong, Yezhen and Litany, Or and Gao, Yue and Guibas, Leonidas J},
+								    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+								    pages={14615--14624},
+								    year={2021}}
 							</code></pre>
 							</div>
 						</div>
 						<hr/ style="margin-top: 1em">
 
 				        <h3>Acknowledgements</h3>
-								<p>This research is supported by a grant
-								from the SAIL-Toyota Center for AI Research, NSF grant
-								CHS-1528025, a Vannevar Bush Faculty fellowship, a
-								TUM/IAS Hans Fischer Senior Fellowship, and gifts from
-								the Adobe, Amazon AWS, and Snap corporations. </p>
+								<p>This research is supported by a grant from the SAIL-Toyota Center for AI Research, NSF grant CHS-1528025, a Vannevar Bush Faculty fellowship, a TUM/IAS Hans Fischer Senior Fellowship, and gifts from the Adobe, Amazon AWS, and Snap corporations. </p>
 						<hr/ style="margin-top: 1em">
 				        <h3>Contact</h3>
 				        <p>If you have any questions, please feel free to contact <a href="http://thu17cyz.github.io/">Yezhen Cong</a> at cyz17_at_mails.tsinghua.edu.cn and <a href="http://ai.stanford.edu/~hewang/">He Wang</a> at hewang_at_stanford.edu </p>
