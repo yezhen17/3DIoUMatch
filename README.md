@@ -6,7 +6,7 @@
 
 News: Our paper has been accepted by CVPR 2021!
 
-This is a ***pre-release*** of the code of our paper *3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection*. (arXiv report [here](https://arxiv.org/abs/2012.04355v2)).
+This is a ***pre-release*** of the code of our paper *3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection*. (arXiv report [here](https://arxiv.org/abs/2012.04355v3)).
 
 In this repository, we provide 3DIoUMatch implementation (with Pytorch) based on [VoteNet](https://github.com/facebookresearch/votenet) and [SESS](https://github.com/Na-Z/sess), as well as the training and evaluation scripts on SUNRGB-D and ScanNet.
 
@@ -17,11 +17,12 @@ Please refer to our [project page](https://thu17cyz.github.io/3DIoUMatch/) for m
 If you find our work useful in your research, please consider citing:
 
 ```
-@article{wang20203dioumatch,
-  title={3DIoUMatch: Leveraging IoU Prediction for Semi-Supervised 3D Object Detection},
+@inproceedings{wang20213dioumatch,
+  title={3DIoUMatch: Leveraging iou prediction for semi-supervised 3d object detection},
   author={Wang, He and Cong, Yezhen and Litany, Or and Gao, Yue and Guibas, Leonidas J},
-  journal={arXiv preprint arXiv:2012.04355},
-  year={2020}
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={14615--14624},
+  year={2021}
 }
 ```
 
