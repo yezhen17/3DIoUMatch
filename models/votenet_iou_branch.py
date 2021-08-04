@@ -136,10 +136,18 @@ class VoteNet(nn.Module):
         end_points['heading'] = heading
         return center, size, heading
 
-    def forward(self, inputs):
+    def forward(self, inputs, iou_opt=False):
         end_points = self.forward_backbone(inputs)
         center, size, heading = self.calculate_bbox(end_points)
-        end_points = self.grid_conv(center.detach(), size.detach(), heading.detach(), end_points)
+
+        if iou_opt:
+            center.retain_grad()
+            size.retain_grad()
+            if heading.requires_grad:
+                heading.retain_grad()
+            end_points = self.grid_conv(center, size, heading, end_points)
+        else:
+            end_points = self.grid_conv(center.detach(), size.detach(), heading.detach(), end_points)
         return end_points
 
     def forward_iou_part_only(self, end_points, center, size):
@@ -170,6 +178,10 @@ class VoteNet(nn.Module):
         end_points['jitter_center'] = center_jitter
         end_points['jitter_size'] = size_jitter * 2
         end_points['jitter_heading'] = heading_jitter
+        return end_points
+
+    def forward_onlyiou_faster(self, end_points, center, size, heading):
+        end_points = self.grid_conv(center, size, heading, end_points)
         return end_points
 
 

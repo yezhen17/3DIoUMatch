@@ -66,6 +66,8 @@ parser.add_argument('--resume', action='store_true', help='resume training inste
 parser.add_argument('--eval', action='store_true')
 parser.add_argument('--conf_thresh', type=float, default=0.05)
 parser.add_argument('--view_stats', action='store_true')
+parser.add_argument('--opt_rate', type=float, default=5e-4, help='Optimization rate for eval with opt')
+parser.add_argument('--opt_step', type=int, default=0, help='Optimization step for eval with opt')
 FLAGS = parser.parse_args()
 print(FLAGS)
 
@@ -403,7 +405,7 @@ def evaluate_one_epoch():
         for ap_calculator in ap_calculator_list:
             ap_calculator.step(batch_pred_map_cls, batch_gt_map_cls)
 
-            # Log statistics
+    # Log statistics
     TEST_VISUALIZER.log_scalars({tb_name(key): stat_dict[key] / float(batch_idx + 1) for key in stat_dict},
                                 (EPOCH_CNT + 1) * len(LABELED_DATALOADER) * BATCH_SIZE)
     for key in sorted(stat_dict.keys()):
@@ -424,6 +426,112 @@ def evaluate_one_epoch():
     return mean_loss, map
 
 
+def evaluate_with_opt():
+    stat_dict = {}  # collect statistics
+    ap_calculator_list = [APCalculator(iou_thresh, DATASET_CONFIG.class2type) \
+                          for iou_thresh in AP_IOU_THRESHOLDS]
+
+    detector.eval()  # set model to eval mode (for bn and dp)
+    for batch_idx, batch_data_label in enumerate(TEST_DATALOADER):
+        for key in batch_data_label:
+            batch_data_label[key] = batch_data_label[key].to(device)
+
+        # Forward pass
+        inputs = {'point_clouds': batch_data_label['point_clouds']}
+
+        optimizer.zero_grad()
+        end_points = detector(inputs, iou_opt=True)
+        center = end_points['center']
+        size_class = torch.argmax(end_points['size_scores'], dim=-1)
+        sem_cls = end_points['sem_cls_scores'].argmax(-1)
+        size = end_points['size']
+        heading = end_points['heading']
+        iou = end_points['iou_scores']
+        origin_iou = iou.clone()
+        iou_gathered = torch.gather(iou, dim=2, index=sem_cls.unsqueeze(-1).detach()).squeeze(-1).contiguous().view(-1)
+        iou_gathered.backward(torch.ones(iou_gathered.shape).cuda())
+        # max_iou = iou_gathered.view(center.shape[:2])
+        center_grad = center.grad
+        size_grad = size.grad
+        mask = torch.ones(center.shape).cuda()
+        count = 0
+
+        for k in end_points.keys():
+            end_points[k] = end_points[k].detach()
+        while True:
+            center_ = center.detach() + FLAGS.opt_rate * center_grad * mask
+            size_ = size.detach() + FLAGS.opt_rate * size_grad * mask
+            heading_ = heading.detach()
+            optimizer.zero_grad()
+            center_.requires_grad = True
+            size_.requires_grad = True
+            end_points_ = detector.forward_onlyiou_faster(end_points, center_, size_, heading_)
+            iou = end_points_['iou_scores']
+            iou_gathered = torch.gather(iou, dim=2, index=sem_cls.unsqueeze(-1).detach()).squeeze(-1).contiguous().view(-1)
+            iou_gathered.backward(torch.ones(iou_gathered.shape).cuda())
+            center_grad = center_.grad
+            size_grad = size_.grad
+            # cur_iou = iou_gathered.view(center.shape[:2])
+            # mask[cur_iou < max_iou - 0.1] = 0
+            # mask[torch.abs(cur_iou - max_iou) < 0.001] = 0
+            # print(mask.sum().float() /mask.view(-1).shape[-1])
+            count += 1
+            if count > FLAGS.opt_step:
+                break
+            center = center_
+            size = size_
+
+        end_points['center'] = center_
+        B, K = size_class.shape[:2]
+        mean_size_arr = DATASET_CONFIG.mean_size_arr
+        mean_size_arr = torch.from_numpy(mean_size_arr.astype(np.float32)).cuda()  # (num_size_cluster,3)
+        size_base = torch.index_select(mean_size_arr, 0, size_class.view(-1))
+        size_base = size_base.view(B, K, 3)
+        end_points['size_residuals'] = (size_ * 2 - size_base).unsqueeze(2).expand(-1, -1, DATASET_CONFIG.num_size_cluster, -1)
+        optimizer.zero_grad()
+
+        # if FLAGS.first_nms:
+        #     end_points['iou_scores'] = origin_iou
+
+        # Compute loss
+        for key in batch_data_label:
+            assert (key not in end_points)
+            end_points[key] = batch_data_label[key]
+        loss, end_points = test_detector_criterion(end_points, DATASET_CONFIG)
+
+        batch_pred_map_cls = parse_predictions(end_points, CONFIG_DICT)
+        batch_gt_map_cls = parse_groundtruths(end_points, CONFIG_DICT)
+
+        # Accumulate statistics and print out
+        for key in end_points:
+            if 'loss' in key or 'acc' in key or 'ratio' in key or 'value' in key:
+                if key not in stat_dict: stat_dict[key] = 0
+                stat_dict[key] += end_points[key].item()
+
+        # ap_calculator.step(batch_pred_map_cls, batch_gt_map_cls)
+        for ap_calculator in ap_calculator_list:
+            ap_calculator.step(batch_pred_map_cls, batch_gt_map_cls)
+
+    # Log statistics
+    TEST_VISUALIZER.log_scalars({tb_name(key): stat_dict[key] / float(batch_idx + 1) for key in stat_dict},
+                                (EPOCH_CNT + 1) * len(LABELED_DATALOADER) * BATCH_SIZE)
+    for key in sorted(stat_dict.keys()):
+        log_string('eval mean %s: %f' % (key, stat_dict[key] / (float(batch_idx + 1))))
+
+    # Evaluate average precision
+    map = []
+    for i, ap_calculator in enumerate(ap_calculator_list):
+        print('-' * 10, 'iou_thresh: %f' % (AP_IOU_THRESHOLDS[i]), '-' * 10)
+        metrics_dict = ap_calculator.compute_metrics()
+        for key in metrics_dict:
+            log_string('eval %s: %f' % (key, metrics_dict[key]))
+        TEST_VISUALIZER.log_scalars({'metrics_' + str(AP_IOU_THRESHOLDS[i]) + '/' + key: metrics_dict[key] for key in metrics_dict if key in ['mAP', 'AR']},
+                                    (EPOCH_CNT + 1) * len(LABELED_DATALOADER) * BATCH_SIZE)
+        map.append(metrics_dict['mAP'])
+
+    mean_loss = stat_dict['detection_loss'] / float(batch_idx + 1)
+    return mean_loss, map
+
 def train():
     global EPOCH_CNT
     global start_epoch
@@ -433,7 +541,10 @@ def train():
     global BEST_MAP
     if FLAGS.eval:
         np.random.seed()
-        evaluate_one_epoch()
+        if FLAGS.opt_step > 0:
+            evaluate_with_opt()
+        else:
+            evaluate_one_epoch()
         sys.exit(0)
     start_from = 0
     if FLAGS.resume:
