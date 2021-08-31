@@ -12,6 +12,8 @@ In this repository, we provide 3DIoUMatch implementation (with Pytorch) based on
 
 Please refer to our [project page](https://thu17cyz.github.io/3DIoUMatch/) for more information.
 
+The PV-RCNN based version is [here](https://github.com/THU17cyz/3DIoUMatch-PVRCNN).
+
 ## Citation
 
 If you find our work useful in your research, please consider citing:
