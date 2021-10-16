@@ -4,7 +4,7 @@
 
 ## Updates
 
-10/15/2021: Fixed a bug which caused SUN RGB-D unlabeled data to go unaugmented. This bug was introduced when we prepared the code for release so the results in the paper are unaffected. Credit to [Bowen Cheng](chengbowen052@buaa.edu.cn).
+10/15/2021: Fixed a bug which caused SUN RGB-D unlabeled data to go unaugmented, see this [commit](https://github.com/THU17cyz/3DIoUMatch/commit/c01bc22eacec48f3dd0d4c7d4384c258102341a1). This bug was introduced when we prepared the code for release so the results in the paper are unaffected. Credit to Bowen Cheng.
 
 ## Introduction
 
