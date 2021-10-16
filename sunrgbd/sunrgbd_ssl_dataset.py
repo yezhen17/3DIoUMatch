@@ -183,7 +183,7 @@ class SunrgbdSSLLabeledDataset(Dataset):
 
 class SunrgbdSSLUnlabeledDataset(Dataset):
     def __init__(self, labeled_sample_list=None, num_points=20000, use_color=False, use_height=False, use_v1=False,
-                 aug_num=1, scan_idx_list=None, load_labels=None):
+                 aug_num=1, scan_idx_list=None, load_labels=None, augment=True):
         print('----------------Sunrgbd Unlabeled Dataset Initialization----------------')
         if use_v1:
             self.data_path = os.path.join(ROOT_DIR, 'sunrgbd/sunrgbd_pc_bbox_votes_50k_v1_train')
@@ -211,6 +211,7 @@ class SunrgbdSSLUnlabeledDataset(Dataset):
         self.use_height = use_height
         self.aug_num = aug_num
         self.load_labels = load_labels
+        self.augment = augment
         if load_labels:
             print('Warning! Loading labels for analysis')
 

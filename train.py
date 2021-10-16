@@ -122,7 +122,8 @@ if FLAGS.dataset == 'sunrgbd':
                                                    use_color=FLAGS.use_color,
                                                    use_height=(not FLAGS.no_height),
                                                    use_v1=(not FLAGS.use_sunrgbd_v2),
-                                                   load_labels=FLAGS.view_stats)
+                                                   load_labels=FLAGS.view_stats,
+                                                   augment=True)
     TEST_DATASET = SunrgbdDetectionVotesDataset('val',
                                                 num_points=NUM_POINT, augment=False,
                                                 use_color=FLAGS.use_color, use_height=(not FLAGS.no_height),
@@ -142,7 +143,8 @@ elif FLAGS.dataset == 'scannet':
                                                    num_points=NUM_POINT,
                                                    use_color=FLAGS.use_color,
                                                    use_height=(not FLAGS.no_height),
-                                                   load_labels=FLAGS.view_stats)
+                                                   load_labels=FLAGS.view_stats,
+                                                   augment=True)
     TEST_DATASET = ScannetDetectionDataset('val',
                                             num_points=NUM_POINT, augment=False,
                                             use_color=FLAGS.use_color, use_height=(not FLAGS.no_height))
