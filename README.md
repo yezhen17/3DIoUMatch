@@ -2,6 +2,10 @@
 
 ![teaser](imgs/teaser.png)
 
+## Updates
+
+10/15/2021: Fixed a bug which caused SUN RGB-D unlabeled data to go unaugmented. This bug was introduced when we prepared the code for release so the results in the paper are unaffected. Credit to [Bowen Cheng](chengbowen052@buaa.edu.cn).
+
 ## Introduction
 
 News: Our paper has been accepted by CVPR 2021!
