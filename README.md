@@ -34,6 +34,14 @@ If you find our work useful in your research, please consider citing:
 
 ## Installation
 
+Preparation: A Ubuntu system is necessary, do not try to use Windows.
+
+Install Nvidia driver and CUDA Toolkit.
+```
+$ nvidia-smi  # check driver
+$ nvcc --version # check toolkit
+```
+
 Install `Python` -- This repo is tested with Python 3.7.6.
 
 Install `NumPy` -- This repo is tested with NumPy 1.18.5. Please make sure your NumPy version is at least 1.18.
@@ -41,7 +49,9 @@ Install `NumPy` -- This repo is tested with NumPy 1.18.5. Please make sure your 
 Install `PyTorch` with `CUDA` -- This repo is tested with 
 PyTorch 1.5.1, CUDA 10.1. It may work with newer versions, 
 but that is not guaranteed. A lower version may be problematic.
-
+```
+pip install torch==1.5.1 torchvision==0.6.1
+```
 Install `TensorFlow` (for `TensorBoard`) -- This repo is tested with TensorFlow 2.2.0.
 
 Compile the CUDA code for [PointNet++](https://arxiv.org/abs/1706.02413), which is used in the backbone network:
@@ -55,7 +65,7 @@ If there is a problem, please refer to [Pointnet2/Pointnet++ PyTorch](https://gi
 Compile the CUDA code for general 3D IoU calculation in [OpenPCDet](https://github.com/open-mmlab/OpenPCDet):
 ```
 cd OpenPCDet
-python setup.py install
+python setup.py develop
 ```
 
 I deleted the CUDA kernels except 3D IoU calculation in OpenPCDet
@@ -69,8 +79,8 @@ pip install -r requirements.txt
 ## Datasets
 
 ### ScanNet
-Please follow the instructions in `scannet/README.md`.
-
+Please follow the instructions in `scannet/README.md`. using the download script with 
+`-o $(pwd) --types _vh_clean_2.ply .aggregation.json _vh_clean_2.0.010000.segs.json .txt` options to download data. 
 ### SUNRGB-D
 Please follow the instructions in `sunrgbd/README.md`. 
 

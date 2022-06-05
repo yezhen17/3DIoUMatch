@@ -15,9 +15,9 @@ import sys
 import datetime
 import numpy as np
 from load_scannet_data import export
-import pdb
-from vtk_visualizer.plot3d import *
-import cv2
+# import pdb
+# from vtk_visualizer.plot3d import *
+# import cv2
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
