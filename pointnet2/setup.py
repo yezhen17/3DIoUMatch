@@ -11,7 +11,7 @@ _ext_src_root = "_ext_src"
 _ext_sources = glob.glob("{}/src/*.cpp".format(_ext_src_root)) + glob.glob(
     "{}/src/*.cu".format(_ext_src_root)
 )
-_ext_headers = glob.glob("{}/include/*".format(_ext_src_root))
+# _ext_headers = glob.glob("{}/include/*".format(_ext_src_root))
 
 setup(
     name='pointnet2',
@@ -20,8 +20,8 @@ setup(
             name='pointnet2._ext',
             sources=_ext_sources,
             extra_compile_args={
-                "cxx": ["-O2", "-I{}".format("{}/include".format(_ext_src_root))],
-                "nvcc": ["-O2", "-I{}".format("{}/include".format(_ext_src_root))],
+                "cxx": ["-O2"],
+                "nvcc": ["-O2"],
             },
         )
     ],
