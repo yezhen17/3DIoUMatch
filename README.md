@@ -34,7 +34,7 @@ If you find our work useful in your research, please consider citing:
 
 ## Installation
 
-Preparation: A Ubuntu system is necessary, do not try to use Windows.
+Preparation: A Ubuntu system with GPU.
 
 Install Nvidia driver and CUDA Toolkit.
 ```
@@ -75,6 +75,23 @@ Install dependencies:
 ```
 pip install -r requirements.txt
 ```
+
+## Installation on Windows
+Preparation: GPU support CUDA 10.2, not use GeForce 30 series with Ampere micro-architecture, anaconda is recommended.
+```
+> nvidia-smi # check nvidia driver
+> nvcc --version # check CUDA Toolkit version
+> cl # check MSVC compiler, if no, add compile to environment path
+```
+
+1. create a virtual environment: `conda create --name iou python=3.7`
+2. install `numpy`: `conda install numpy -y`
+3. install `pytorch` and `cudatoolkit`: `conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.2 -c pytorch`
+4. degrade setuptools: `pip install setuptools=59.6`
+5. install `pointnet2`: `cd pointnet2; python ./setup.py install`
+6. install `OpenPCDet`: `cd OpenPCDet; python ./setup.py develop`
+7. install `tensorflow`: `pip install tensorflow` 
+8. install `requirements`: `pip install -r ./requirements.txt`
 
 ## Datasets
 
