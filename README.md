@@ -4,6 +4,8 @@
 
 ## Updates
 
+06/16/2022: Added support for Windows by @nicolgo. Thanks for the contribution!
+
 10/15/2021: Fixed a bug which caused SUN RGB-D unlabeled data to go unaugmented, see this [commit](https://github.com/THU17cyz/3DIoUMatch/commit/c01bc22eacec48f3dd0d4c7d4384c258102341a1). This bug was introduced when we prepared the code for release so the results in the paper are unaffected. Credit to Bowen Cheng.
 
 ## Introduction
@@ -52,6 +54,11 @@ but that is not guaranteed. A lower version may be problematic.
 ```
 pip install torch==1.5.1 torchvision==0.6.1
 ```
+or
+```
+conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.1 -c pytorch
+```
+
 Install `TensorFlow` (for `TensorBoard`) -- This repo is tested with TensorFlow 2.2.0.
 
 Compile the CUDA code for [PointNet++](https://arxiv.org/abs/1706.02413), which is used in the backbone network:
