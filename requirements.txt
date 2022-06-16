@@ -3,3 +3,4 @@ opencv-python
 plyfile
 trimesh==2.35.39
 mayavi
+vtk_visualizer
